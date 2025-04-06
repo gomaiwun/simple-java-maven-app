@@ -19,10 +19,18 @@ pipeline {
                 }
             }
         }
-        stage('Deliver') { 
+        stage('Deliver') {
             steps {
                 sh './jenkins/scripts/deliver.sh' 
             }
+        }
+    }
+    post {
+        success {
+            echo 'Build completed successfully!'
+        }
+        failure {
+            echo 'Build failed!'
         }
     }
 }
