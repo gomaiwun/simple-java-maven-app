@@ -1,25 +1,27 @@
 pipeline {
     agent any
+
     options {
         skipStagesAfterUnstable()
     }
+
     stages {
-        stages {
-                stage('Print Environment Variables') {
-                    steps {
-                        script {
-                            env.each { key, value ->
-                                echo "${key}=${value}"
-                            }
-                        }
+        stage('Print Environment Variables') {
+            steps {
+                script {
+                    env.each { key, value ->
+                        echo "${key}=${value}"
                     }
                 }
             }
+        }
+
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
+
         stage('Test') {
             steps {
                 sh 'mvn test'
@@ -30,12 +32,14 @@ pipeline {
                 }
             }
         }
+
         stage('Deliver') {
             steps {
-                sh './jenkins/scripts/deliver.sh' 
+                sh './jenkins/scripts/deliver.sh'
             }
         }
     }
+
     post {
         success {
             echo 'Build completed successfully!'
